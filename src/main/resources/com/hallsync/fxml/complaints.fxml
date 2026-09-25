@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.hallsync.controller.ComplaintsController"
+      spacing="18">
+    <padding><Insets topRightBottomLeft="10"/></padding>
+
+    <Label text="Complaints" styleClass="page-title"/>
+
+    <!-- Submission form (hidden for Admin/Provost) -->
+    <VBox fx:id="submitCard" spacing="10" styleClass="card" visible="false" managed="false">
+        <padding><Insets topRightBottomLeft="18"/></padding>
+        <Label text="New complaint" styleClass="card-title"/>
+        <TextField fx:id="subjectField" promptText="Subject"/>
+        <TextArea fx:id="messageArea" promptText="Describe the service issue" prefRowCount="5"/>
+        <Button text="Submit Complaint" styleClass="action-button" onAction="#handleSubmit"/>
+    </VBox>
+
+    <Label fx:id="listTitle" text="Complaint Portal" styleClass="page-title"/>
+
+    <!-- Complaint cards loaded dynamically -->
+    <VBox fx:id="complaintsContainer" spacing="12"/>
+</VBox>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.hallsync.controller.HallInfoController"
+      spacing="18">
+    <padding><Insets topRightBottomLeft="10"/></padding>
+
+    <Label text="Hall Information" styleClass="page-title"/>
+
+    <!-- Current Hall Team – populated from DB -->
+    <VBox styleClass="card" spacing="8">
+        <padding><Insets topRightBottomLeft="18"/></padding>
+        <Label text="Current Hall Team" styleClass="card-title"/>
+        <Label fx:id="provostLabel" text="Provost: "/>
+        <Label fx:id="diningManagerLabel" text="Dining Manager: "/>
+        <Label fx:id="diningContactLabel" text="Dining Manager Contact: "/>
+    </VBox>
+
+    <!-- Hall Achievements – loaded from hall-info.json -->
+    <VBox styleClass="card" spacing="8">
+        <padding><Insets topRightBottomLeft="18"/></padding>
+        <Label text="Hall Achievements" styleClass="card-title"/>
+        <VBox fx:id="achievementsContainer"/>
+    </VBox>
+
+    <!-- Former Provost Archive – loaded from hall-info.json -->
+    <VBox styleClass="card" spacing="8">
+        <padding><Insets topRightBottomLeft="18"/></padding>
+        <Label text="Former Provost Archive" styleClass="card-title"/>
+        <VBox fx:id="formerProvostsContainer"/>
+    </VBox>
+</VBox>

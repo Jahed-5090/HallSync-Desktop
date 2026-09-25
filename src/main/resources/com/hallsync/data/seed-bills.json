@@ -1,0 +1,18 @@
+[
+  {
+    "studentId": 1,
+    "month": "September 2026",
+    "rent": 2500.0,
+    "meals": 1800.0,
+    "electricity": 450.0,
+    "paid": 2000.0
+  },
+  {
+    "studentId": 1,
+    "month": "August 2026",
+    "rent": 2500.0,
+    "meals": 1700.0,
+    "electricity": 430.0,
+    "paid": 3500.0
+  }
+]

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.hallsync.controller.MealsController"
+      spacing="18">
+    <padding><Insets topRightBottomLeft="10"/></padding>
+
+    <Label text="Meal Management Calendar" styleClass="page-title"/>
+    <Label text="Green = active, Grey = student OFF, Red = hall OFF. Student changes are allowed only 24+ hours ahead."
+           styleClass="subtitle" wrapText="true"/>
+
+    <!-- 6-week calendar grid, populated dynamically -->
+    <VBox fx:id="calendarContainer" spacing="8"/>
+
+    <Label text="Today and the next 23 hours are protected from student changes."
+           styleClass="hint"/>
+</VBox>

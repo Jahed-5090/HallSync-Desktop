@@ -1,0 +1,33 @@
+{
+  "appName": "HallSync",
+  "appTitle": "HallSync",
+  "version": "1.0",
+  "database": {
+    "url": "jdbc:sqlite:hallsync.db",
+    "pragmaForeignKeys": true
+  },
+  "window": {
+    "login": {
+      "width": 1200,
+      "height": 780
+    },
+    "dashboard": {
+      "width": 1250,
+      "height": 820
+    }
+  },
+  "sidebar": {
+    "width": 210,
+    "brandText": "HallSync"
+  },
+  "meals": {
+    "calendarWeeks": 6,
+    "lockoutHours": 24,
+    "defaultState": "ON"
+  },
+  "currency": {
+    "symbol": "৳",
+    "fallbackSymbol": "Tk",
+    "format": "৳ %.2f"
+  }
+}

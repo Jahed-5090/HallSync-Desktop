@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.hallsync.controller.BillsController"
+      spacing="18">
+    <padding><Insets topRightBottomLeft="10"/></padding>
+
+    <Label text="Fees &amp; Dues" styleClass="page-title"/>
+
+    <!-- Bill cards are loaded dynamically -->
+    <VBox fx:id="billsList" spacing="12"/>
+
+    <Button text="Export Bill to PDF" styleClass="action-button" onAction="#handleExportPdf"/>
+</VBox>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.hallsync.controller.HomeController"
+      spacing="18">
+    <padding><Insets topRightBottomLeft="10"/></padding>
+
+    <Label text="Notice Board" styleClass="page-title"/>
+    <Label text="Important hall updates appear first on every dashboard." styleClass="subtitle" wrapText="true"/>
+
+    <!-- Notices are loaded dynamically -->
+    <VBox fx:id="noticesContainer" spacing="12"/>
+
+    <!-- Info grid: Dining Manager, Active Provost, Role -->
+    <GridPane fx:id="infoGrid" hgap="16" vgap="16"/>
+
+    <!-- Quick actions for students (hidden for other roles) -->
+    <HBox fx:id="quickActions" spacing="10" visible="false" managed="false">
+        <Button text="View Bills" styleClass="action-button" onAction="#goToBills"/>
+        <Button text="Manage Meals" styleClass="action-button" onAction="#goToMeals"/>
+        <Button text="Submit Complaint" styleClass="action-button" onAction="#goToComplaints"/>
+    </HBox>
+</VBox>

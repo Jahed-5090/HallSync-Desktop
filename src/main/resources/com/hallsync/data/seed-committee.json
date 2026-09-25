@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Ayesha Rahman",
+    "position": "President",
+    "department": "CSE",
+    "room": "301",
+    "contact": "01711-111111"
+  },
+  {
+    "name": "Siam Hossain",
+    "position": "General Secretary",
+    "department": "EEE",
+    "room": "203",
+    "contact": "01811-222222"
+  },
+  {
+    "name": "Mim Akter",
+    "position": "Treasurer",
+    "department": "English",
+    "room": "302",
+    "contact": "01911-333333"
+  }
+]

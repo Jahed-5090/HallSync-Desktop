@@ -1,0 +1,42 @@
+[
+  {
+    "fullName": "Student Demo",
+    "department": "Computer Science",
+    "roll": "2022331001",
+    "session": "2022-23",
+    "room": "301",
+    "block": "A"
+  },
+  {
+    "fullName": "Nusrat Jahan",
+    "department": "English",
+    "roll": "2022331002",
+    "session": "2022-23",
+    "room": "302",
+    "block": "A"
+  },
+  {
+    "fullName": "Tanvir Hasan",
+    "department": "EEE",
+    "roll": "2022331003",
+    "session": "2022-23",
+    "room": "203",
+    "block": "B"
+  },
+  {
+    "fullName": "Sadia Sultana",
+    "department": "Mathematics",
+    "roll": "2021331004",
+    "session": "2021-22",
+    "room": "210",
+    "block": "B"
+  },
+  {
+    "fullName": "Rafi Ahmed",
+    "department": "Physics",
+    "roll": "2022331005",
+    "session": "2022-23",
+    "room": "402",
+    "block": "C"
+  }
+]

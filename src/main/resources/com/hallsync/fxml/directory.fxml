@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.hallsync.controller.DirectoryController"
+      spacing="18">
+    <padding><Insets topRightBottomLeft="10"/></padding>
+
+    <Label text="Universal Student Directory" styleClass="page-title"/>
+
+    <VBox spacing="10" styleClass="card">
+        <padding><Insets topRightBottomLeft="18"/></padding>
+        <Label text="Read-only search" styleClass="card-title"/>
+        <TextField fx:id="searchField"
+                   promptText="Search by name, department, roll, room or block"
+                   onAction="#handleSearch"/>
+        <Button text="Search" styleClass="action-button" onAction="#handleSearch"/>
+    </VBox>
+
+    <!-- Search results loaded dynamically -->
+    <VBox fx:id="resultsContainer" spacing="10"/>
+</VBox>

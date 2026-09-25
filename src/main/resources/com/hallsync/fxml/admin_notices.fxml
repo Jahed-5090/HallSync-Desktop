@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.hallsync.controller.AdminNoticesController"
+      spacing="18">
+    <padding><Insets topRightBottomLeft="10"/></padding>
+
+    <Label text="Publish Notice" styleClass="page-title"/>
+
+    <!-- Notice editor card -->
+    <VBox styleClass="card" spacing="10">
+        <padding><Insets topRightBottomLeft="18"/></padding>
+        <Label text="Admin notice editor" styleClass="card-title"/>
+        <TextField fx:id="titleField" promptText="Notice title"/>
+        <TextArea fx:id="bodyArea" promptText="Notice details" prefRowCount="5"/>
+        <Button text="Publish" styleClass="action-button" onAction="#handlePublish"/>
+    </VBox>
+
+    <Label text="Current Notices" styleClass="page-title"/>
+
+    <!-- Existing notices loaded dynamically -->
+    <VBox fx:id="noticesContainer" spacing="12"/>
+</VBox>

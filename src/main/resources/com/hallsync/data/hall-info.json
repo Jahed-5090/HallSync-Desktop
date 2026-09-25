@@ -1,0 +1,18 @@
+{
+  "currentTeam": {
+    "provost": "Dr. A. Rahman",
+    "diningManager": "Mr. Karim Uddin",
+    "diningContact": "+880 1700-000000"
+  },
+  "achievements": [
+    "Best Residential Hall Award – 2025",
+    "Smart Dining Initiative – 2026",
+    "Inter-Hall Sports Champions – 2026"
+  ],
+  "formerProvosts": [
+    { "year": "2023", "name": "Prof. S. Karim" },
+    { "year": "2024", "name": "Prof. M. Hossain" },
+    { "year": "2025", "name": "Dr. N. Islam" },
+    { "year": "2026", "name": "Dr. A. Rahman" }
+  ]
+}

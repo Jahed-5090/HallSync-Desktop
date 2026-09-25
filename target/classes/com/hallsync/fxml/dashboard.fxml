@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.hallsync.controller.DashboardController"
+            styleClass="root"
+            stylesheets="@/style.css">
+
+    <!-- Sidebar -->
+    <left>
+        <VBox fx:id="sidebar" spacing="8" prefWidth="210" styleClass="sidebar">
+            <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+            <Label text="HallSync" styleClass="brand"/>
+            <Label fx:id="userLabel" styleClass="user-label"/>
+            <Separator/>
+            <!-- Navigation buttons are added dynamically based on role -->
+            <VBox fx:id="navContainer" spacing="4"/>
+            <Region VBox.vgrow="ALWAYS"/>
+            <Button text="Log out" styleClass="nav-button" maxWidth="1.7976931348623157E308"
+                    onAction="#handleLogout"/>
+        </VBox>
+    </left>
+
+    <!-- Content area -->
+    <center>
+        <ScrollPane fx:id="scrollPane" fitToWidth="true" styleClass="scroll">
+            <VBox fx:id="contentArea" spacing="18" styleClass="page">
+                <padding><Insets topRightBottomLeft="26"/></padding>
+            </VBox>
+        </ScrollPane>
+    </center>
+</BorderPane>

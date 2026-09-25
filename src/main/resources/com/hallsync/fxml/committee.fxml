@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.hallsync.controller.CommitteeController"
+      spacing="18">
+    <padding><Insets topRightBottomLeft="10"/></padding>
+
+    <Label text="Student Hall Committee" styleClass="page-title"/>
+    <Label text="Public student profiles are linked to the committee records below."
+           styleClass="subtitle" wrapText="true"/>
+
+    <!-- Committee member cards loaded dynamically -->
+    <VBox fx:id="membersContainer" spacing="12"/>
+</VBox>
