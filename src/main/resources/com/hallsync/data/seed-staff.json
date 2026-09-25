@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Md. Rahim Uddin",
+    "phone": "+880 1712-345678",
+    "location": "Ground Floor, Main Building",
+    "workRole": "Security Guard"
+  },
+  {
+    "name": "Kamal Hossain",
+    "phone": "+880 1756-789012",
+    "location": "Block A, Corridor",
+    "workRole": "Hall Cleaner"
+  },
+  {
+    "name": "Mr. Karim Uddin",
+    "phone": "+880 1700-000000",
+    "location": "Dining Hall Office",
+    "workRole": "Dining Manager"
+  },
+  {
+    "name": "Abdul Matin",
+    "phone": "+880 1698-456321",
+    "location": "Block B, Ground Floor",
+    "workRole": "Electrician"
+  },
+  {
+    "name": "Shafiq Ahmed",
+    "phone": "+880 1745-112233",
+    "location": "Maintenance Room",
+    "workRole": "Plumber"
+  },
+  {
+    "name": "Nasir Uddin",
+    "phone": "+880 1678-998877",
+    "location": "Hall Gate",
+    "workRole": "Night Guard"
+  },
+  {
+    "name": "Ruhul Amin",
+    "phone": "+880 1723-556644",
+    "location": "Dining Hall Kitchen",
+    "workRole": "Head Cook"
+  },
+  {
+    "name": "Jamal Sheikh",
+    "phone": "+880 1654-332211",
+    "location": "Dining Hall Kitchen",
+    "workRole": "Assistant Cook"
+  }
+]

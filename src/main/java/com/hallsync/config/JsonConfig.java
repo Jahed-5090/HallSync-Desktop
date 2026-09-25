@@ -2,7 +2,6 @@ package com.hallsync.config;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
@@ -207,5 +206,6 @@ public class JsonConfig {
     public static String seedBillsPath()     { return DATA_BASE + "seed-bills.json"; }
     public static String seedStudentsPath()  { return DATA_BASE + "seed-students.json"; }
     public static String seedCommitteePath() { return DATA_BASE + "seed-committee.json"; }
+    public static String seedStaffPath()     { return DATA_BASE + "seed-staff.json"; }
     public static String hallInfoPath()      { return DATA_BASE + "hall-info.json"; }
 }

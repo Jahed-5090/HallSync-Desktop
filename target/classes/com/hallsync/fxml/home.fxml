@@ -18,6 +18,9 @@
     <!-- Info grid: Dining Manager, Active Provost, Role -->
     <GridPane fx:id="infoGrid" hgap="16" vgap="16"/>
 
+    <!-- View Hall Staff button — visible on all dashboards -->
+    <Button text="👥  View Hall Staff" styleClass="action-button" onAction="#goToStaff"/>
+
     <!-- Quick actions for students (hidden for other roles) -->
     <HBox fx:id="quickActions" spacing="10" visible="false" managed="false">
         <Button text="View Bills" styleClass="action-button" onAction="#goToBills"/>

@@ -39,7 +39,7 @@ public class AppController {
         TextField username = new TextField(); username.setPromptText("Username");
         PasswordField password = new PasswordField(); password.setPromptText("Password");
         Button login = View.button("Login");
-        Label hint = new Label("Demo accounts: admin/admin · provost/provost · student/student · staff/staff"); hint.getStyleClass().add("hint"); hint.setWrapText(true);
+        Label hint = new Label("Demo accounts: admin/admin · provost/provost · student/student"); hint.getStyleClass().add("hint"); hint.setWrapText(true);
         login.setOnAction(e -> {
             User found = Database.login(username.getText().trim(), password.getText());
             if (found == null) View.showError("Login failed", "Incorrect username or password."); else { user = found; showDashboard("Home"); }
@@ -68,6 +68,7 @@ public class AppController {
         else if (page.equals("Directory")) directoryPage();
         else if (page.equals("Hall Info")) hallInfoPage();
         else if (page.equals("Committee")) committeePage();
+        else if (page.equals("Staff")) staffPage();
         else homePage();
     }
 
@@ -88,6 +89,7 @@ public class AppController {
         grid.add(View.card("Active Provost", new Label(info[2])), 1, 0);
         grid.add(View.card("Role", new Label(user.role), new Label("Your menu is role-based.")), 2, 0);
         content.getChildren().add(grid);
+        Button staffBtn = View.button("👥  View Hall Staff"); staffBtn.setOnAction(e -> showDashboard("Staff")); content.getChildren().add(staffBtn);
         if (user.role.equals("STUDENT")) content.getChildren().add(studentQuickActions());
     }
 
@@ -189,7 +191,7 @@ public class AppController {
 
     private void complaintsPage() {
         content.getChildren().add(View.title("Complaints"));
-        if (user.role.equals("STUDENT") || user.role.equals("STAFF")) {
+        if (user.role.equals("STUDENT")) {
             TextField subject = new TextField(); subject.setPromptText("Subject"); TextArea message = new TextArea(); message.setPromptText("Describe the service issue"); message.setPrefRowCount(5);
             Button submit = View.button("Submit Complaint"); submit.setOnAction(e -> {
                 if (subject.getText().isBlank() || message.getText().isBlank()) { View.showError("Missing data", "Enter a subject and message."); return; }
@@ -240,6 +242,18 @@ public class AppController {
         for (CommitteeMember m : Database.committee()) {
             Button profile = View.button("Open public profile"); profile.setOnAction(e -> View.showInfo("Public Profile", m.name() + "\n\nPosition: " + m.position() + "\nDepartment: " + m.department() + "\nRoom: " + m.room() + "\nContact: " + m.contact()));
             content.getChildren().add(View.card(m.name(), new Label("Position: " + m.position()), new Label("Department: " + m.department()), new Label("Room: " + m.room()), profile));
+        }
+    }
+
+    private void staffPage() {
+        content.getChildren().add(View.title("Hall Staff Directory"));
+        content.getChildren().add(View.subtitle("All current staff members of the hall and their contact information."));
+        Button back = View.button("← Back to Home"); back.setOnAction(e -> showDashboard("Home")); content.getChildren().add(back);
+        for (StaffMember s : Database.hallStaff()) {
+            content.getChildren().add(View.card(s.name(),
+                new Label("Role: " + s.workRole()),
+                new Label("Phone: " + s.phone()),
+                new Label("Location: " + s.location())));
         }
     }
 

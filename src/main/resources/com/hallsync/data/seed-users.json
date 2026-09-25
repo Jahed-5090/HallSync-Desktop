@@ -16,11 +16,5 @@
     "password": "student",
     "fullName": "Student Demo",
     "role": "STUDENT"
-  },
-  {
-    "username": "staff",
-    "password": "staff",
-    "fullName": "Hall Staff Demo",
-    "role": "STAFF"
   }
 ]

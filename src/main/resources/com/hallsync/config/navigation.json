@@ -21,13 +21,6 @@
       "canSetHallOff": false,
       "canSubmitComplaints": true,
       "showQuickActions": true
-    },
-    "STAFF": {
-      "menuItems": ["Home", "Bills", "Meals", "Complaints", "Directory", "Hall Info", "Committee"],
-      "canPublishNotices": false,
-      "canResolveComplaints": false,
-      "canSetHallOff": false,
-      "canSubmitComplaints": true
     }
   },
   "pageRoutes": {
@@ -38,7 +31,8 @@
     "Complaints": "complaints.fxml",
     "Directory": "directory.fxml",
     "Hall Info": "hallinfo.fxml",
-    "Committee": "committee.fxml"
+    "Committee": "committee.fxml",
+    "Staff": "staff.fxml"
   },
   "defaultPage": "Home"
 }

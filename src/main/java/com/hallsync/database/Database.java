@@ -34,6 +34,7 @@ public class Database {
             s.executeUpdate("CREATE TABLE IF NOT EXISTS students (id INTEGER PRIMARY KEY AUTOINCREMENT, full_name TEXT, department TEXT, roll TEXT, session TEXT, room TEXT, block TEXT)");
             s.executeUpdate("CREATE TABLE IF NOT EXISTS hall_info (id INTEGER PRIMARY KEY CHECK(id=1), dining_manager TEXT, dining_contact TEXT, provost TEXT)");
             s.executeUpdate("CREATE TABLE IF NOT EXISTS committee (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, position TEXT, department TEXT, room TEXT, contact TEXT)");
+            s.executeUpdate("CREATE TABLE IF NOT EXISTS hall_staff (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, phone TEXT, location TEXT, work_role TEXT)");
 
             seedUsers(c);
             seedNotices(c);
@@ -42,6 +43,7 @@ public class Database {
             seedStudents(c);
             seedHallInfo(c);
             seedCommittee(c);
+            seedHallStaff(c);
         } catch (SQLException e) {
             throw new RuntimeException("Database setup failed", e);
         }
@@ -268,6 +270,37 @@ public class Database {
         try (Connection c = connect(); PreparedStatement p = c.prepareStatement("SELECT name,position,department,room,contact FROM committee ORDER BY id")) {
             ResultSet r = p.executeQuery();
             while (r.next()) list.add(new CommitteeMember(r.getString(1), r.getString(2), r.getString(3), r.getString(4), r.getString(5)));
+        } catch (SQLException e) { e.printStackTrace(); }
+        return list;
+    }
+
+    // ────────────────── Hall Staff ──────────────────
+
+    private static void seedHallStaff(Connection c) throws SQLException {
+        try (Statement s = c.createStatement(); ResultSet r = s.executeQuery("SELECT COUNT(*) FROM hall_staff")) {
+            if (r.next() && r.getInt(1) == 0) {
+                JsonArray staff = JsonConfig.loadJsonArray(JsonConfig.seedStaffPath());
+                try (PreparedStatement p = c.prepareStatement(
+                        "INSERT INTO hall_staff(name,phone,location,work_role) VALUES(?,?,?,?)")) {
+                    for (JsonElement el : staff) {
+                        JsonObject m = el.getAsJsonObject();
+                        p.setString(1, m.get("name").getAsString());
+                        p.setString(2, m.get("phone").getAsString());
+                        p.setString(3, m.get("location").getAsString());
+                        p.setString(4, m.get("workRole").getAsString());
+                        p.executeUpdate();
+                    }
+                }
+            }
+        }
+    }
+
+    public static List<StaffMember> hallStaff() {
+        List<StaffMember> list = new ArrayList<>();
+        try (Connection c = connect(); PreparedStatement p = c.prepareStatement(
+                "SELECT name,phone,location,work_role FROM hall_staff ORDER BY id")) {
+            ResultSet r = p.executeQuery();
+            while (r.next()) list.add(new StaffMember(r.getString(1), r.getString(2), r.getString(3), r.getString(4)));
         } catch (SQLException e) { e.printStackTrace(); }
         return list;
     }

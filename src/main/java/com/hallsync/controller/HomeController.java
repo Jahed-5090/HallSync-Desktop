@@ -62,4 +62,5 @@ public class HomeController implements PageController {
     @FXML private void goToBills()      { dashboard.navigateTo("Bills"); }
     @FXML private void goToMeals()      { dashboard.navigateTo("Meals"); }
     @FXML private void goToComplaints() { dashboard.navigateTo("Complaints"); }
+    @FXML private void goToStaff()      { dashboard.navigateTo("Staff"); }
 }

@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane prefHeight="513.0" prefWidth="527.0" styleClass="login-root" stylesheets="@/style.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/26" fx:controller="com.hallsync.controller.LoginController">
+<StackPane prefHeight="513.0" prefWidth="527.0" styleClass="login-root" stylesheets="@/style.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hallsync.controller.LoginController">
 
     <VBox fx:id="loginBox" maxWidth="380" spacing="15" styleClass="login-box">
         <Label styleClass="page-title" text="HallSync" />
@@ -16,7 +16,7 @@
         <TextField fx:id="usernameField" promptText="Username" />
         <PasswordField fx:id="passwordField" promptText="Password" />
         <Button onAction="#handleLogin" styleClass="action-button" text="Login" />
-        <Label styleClass="hint" text="Demo accounts: admin/admin · provost/provost · student/student · staff/staff" wrapText="true" />
+        <Label styleClass="hint" text="Demo accounts: admin/admin · provost/provost · student/student" wrapText="true" />
       <StackPane.margin>
          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
       </StackPane.margin>
