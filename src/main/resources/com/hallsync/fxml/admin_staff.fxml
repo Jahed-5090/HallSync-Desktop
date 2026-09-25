@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.hallsync.controller.AdminStaffController"
+      spacing="16">
+    <padding><Insets topRightBottomLeft="10"/></padding>
+
+    <!-- Header -->
+    <HBox spacing="12" alignment="CENTER_LEFT">
+        <Label text="Manage Hall Staff" styleClass="page-title"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="＋ Add Staff Member" styleClass="action-button" onAction="#handleAdd"/>
+    </HBox>
+
+    <Label text="Add, edit or remove hall staff members." styleClass="subtitle" wrapText="true"/>
+
+    <!-- Staff cards populated dynamically -->
+    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="scroll">
+        <VBox fx:id="staffContainer" spacing="12">
+            <padding><Insets topRightBottomLeft="4"/></padding>
+        </VBox>
+    </ScrollPane>
+</VBox>

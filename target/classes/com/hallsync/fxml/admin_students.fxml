@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.hallsync.controller.AdminStudentsController"
+      spacing="16">
+    <padding><Insets topRightBottomLeft="10"/></padding>
+
+    <!-- Header -->
+    <HBox spacing="12" alignment="CENTER_LEFT">
+        <Label text="Manage Students" styleClass="page-title"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="＋ Add Student" styleClass="action-button" onAction="#handleAdd"/>
+    </HBox>
+
+    <!-- Tabs: Student List | User Accounts -->
+    <HBox spacing="8">
+        <Button fx:id="tabStudents" text="Student Profiles" styleClass="action-button" onAction="#showStudentTab"/>
+        <Button fx:id="tabAccounts" text="User Accounts" styleClass="tab-button" onAction="#showAccountTab"/>
+    </HBox>
+
+    <!-- Search bar (student tab only) -->
+    <HBox fx:id="searchBar" spacing="8" alignment="CENTER_LEFT">
+        <TextField fx:id="searchField" promptText="Search by name, roll, room…" HBox.hgrow="ALWAYS" onAction="#handleSearch"/>
+        <Button text="Search" styleClass="action-button" onAction="#handleSearch"/>
+    </HBox>
+
+    <!-- Content area — populated dynamically -->
+    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="scroll">
+        <VBox fx:id="contentContainer" spacing="12">
+            <padding><Insets topRightBottomLeft="4"/></padding>
+        </VBox>
+    </ScrollPane>
+</VBox>

@@ -1,7 +1,7 @@
 {
   "roles": {
     "ADMIN": {
-      "menuItems": ["Home", "Notices", "Meals", "Complaints", "Directory", "Hall Info", "Committee"],
+      "menuItems": ["Home", "Notices", "Meals", "Complaints", "Directory", "Hall Info", "Committee", "Manage Students", "Manage Staff"],
       "canPublishNotices": true,
       "canResolveComplaints": true,
       "canSetHallOff": true,
@@ -32,7 +32,9 @@
     "Directory": "directory.fxml",
     "Hall Info": "hallinfo.fxml",
     "Committee": "committee.fxml",
-    "Staff": "staff.fxml"
+    "Staff": "staff.fxml",
+    "Manage Students": "admin_students.fxml",
+    "Manage Staff": "admin_staff.fxml"
   },
   "defaultPage": "Home"
 }

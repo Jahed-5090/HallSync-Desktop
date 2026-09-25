@@ -1,8 +1,8 @@
 package com.hallsync.controller;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.hallsync.config.JsonConfig;
 import com.hallsync.database.Database;
 import com.hallsync.model.*;
@@ -225,14 +225,14 @@ public class AppController {
         content.getChildren().add(View.title("Hall Information"));
         String[] info = Database.hallInfo();
         content.getChildren().add(View.card("Current Hall Team", new Label("Provost: " + info[2]), new Label("Dining Manager: " + info[0]), new Label("Dining Manager Contact: " + info[1])));
-        JsonObject hallData = JsonConfig.loadJsonObject(JsonConfig.hallInfoPath());
-        JsonArray achievements = hallData.getAsJsonArray("achievements");
+        ObjectNode hallData = JsonConfig.loadJsonObject(JsonConfig.hallInfoPath());
+        ArrayNode achievements = (ArrayNode) hallData.get("achievements");
         StringBuilder achText = new StringBuilder();
-        for (JsonElement el : achievements) { if (achText.length() > 0) achText.append("\n"); achText.append("• ").append(el.getAsString()); }
+        for (JsonNode el : achievements) { if (achText.length() > 0) achText.append("\n"); achText.append("• ").append(el.asText()); }
         content.getChildren().add(View.card("Hall Achievements", new Label(achText.toString())));
-        JsonArray provosts = hallData.getAsJsonArray("formerProvosts");
+        ArrayNode provosts = (ArrayNode) hallData.get("formerProvosts");
         StringBuilder provText = new StringBuilder();
-        for (JsonElement el : provosts) { JsonObject p = el.getAsJsonObject(); if (provText.length() > 0) provText.append("\n"); provText.append(p.get("year").getAsString()).append(" — ").append(p.get("name").getAsString()); }
+        for (JsonNode el : provosts) { if (provText.length() > 0) provText.append("\n"); provText.append(el.get("year").asText()).append(" — ").append(el.get("name").asText()); }
         content.getChildren().add(View.card("Former Provost Archive", new Label(provText.toString())));
     }
 

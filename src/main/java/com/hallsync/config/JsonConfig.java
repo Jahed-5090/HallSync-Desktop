@@ -1,59 +1,50 @@
 package com.hallsync.config;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.lang.reflect.Type;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Utility class for loading JSON configuration and data files
  * from the classpath (src/main/resources).
  *
- * All JSON files are loaded once and cached in memory.
+ * Uses Jackson for JSON parsing. Config objects are loaded once and cached.
  */
 public class JsonConfig {
 
-    private static final Gson GSON = new Gson();
+    private static final ObjectMapper MAPPER = new ObjectMapper();
     private static final String CONFIG_BASE = "/com/hallsync/config/";
     private static final String DATA_BASE = "/com/hallsync/data/";
 
     // Cached config objects
-    private static JsonObject appConfig;
-    private static JsonObject navigationConfig;
+    private static ObjectNode appConfig;
+    private static ObjectNode navigationConfig;
 
     // ────────────────── Raw Loaders ──────────────────
 
     /**
-     * Loads a JSON file from the classpath and parses it as a JsonObject.
+     * Loads a JSON file from the classpath and parses it as an ObjectNode.
      */
-    public static JsonObject loadJsonObject(String resourcePath) {
+    public static ObjectNode loadJsonObject(String resourcePath) {
         try (InputStream is = JsonConfig.class.getResourceAsStream(resourcePath)) {
             if (is == null) throw new RuntimeException("Resource not found: " + resourcePath);
-            try (Reader reader = new InputStreamReader(is, StandardCharsets.UTF_8)) {
-                return GSON.fromJson(reader, JsonObject.class);
-            }
+            return (ObjectNode) MAPPER.readTree(is);
         } catch (Exception e) {
             throw new RuntimeException("Failed to load JSON: " + resourcePath, e);
         }
     }
 
     /**
-     * Loads a JSON file from the classpath and parses it as a JsonArray.
+     * Loads a JSON file from the classpath and parses it as an ArrayNode.
      */
-    public static JsonArray loadJsonArray(String resourcePath) {
+    public static ArrayNode loadJsonArray(String resourcePath) {
         try (InputStream is = JsonConfig.class.getResourceAsStream(resourcePath)) {
             if (is == null) throw new RuntimeException("Resource not found: " + resourcePath);
-            try (Reader reader = new InputStreamReader(is, StandardCharsets.UTF_8)) {
-                return GSON.fromJson(reader, JsonArray.class);
-            }
+            return (ArrayNode) MAPPER.readTree(is);
         } catch (Exception e) {
             throw new RuntimeException("Failed to load JSON: " + resourcePath, e);
         }
@@ -65,10 +56,8 @@ public class JsonConfig {
     public static <T> List<T> loadList(String resourcePath, Class<T> elementType) {
         try (InputStream is = JsonConfig.class.getResourceAsStream(resourcePath)) {
             if (is == null) throw new RuntimeException("Resource not found: " + resourcePath);
-            try (Reader reader = new InputStreamReader(is, StandardCharsets.UTF_8)) {
-                Type listType = TypeToken.getParameterized(List.class, elementType).getType();
-                return GSON.fromJson(reader, listType);
-            }
+            return MAPPER.readValue(is,
+                    MAPPER.getTypeFactory().constructCollectionType(List.class, elementType));
         } catch (Exception e) {
             throw new RuntimeException("Failed to load JSON list: " + resourcePath, e);
         }
@@ -76,8 +65,8 @@ public class JsonConfig {
 
     // ────────────────── App Config ──────────────────
 
-    /** Returns the cached app-config.json as a JsonObject. */
-    public static JsonObject getAppConfig() {
+    /** Returns the cached app-config.json as an ObjectNode. */
+    public static ObjectNode getAppConfig() {
         if (appConfig == null) {
             appConfig = loadJsonObject(CONFIG_BASE + "app-config.json");
         }
@@ -85,69 +74,69 @@ public class JsonConfig {
     }
 
     public static String getAppName() {
-        return getAppConfig().get("appName").getAsString();
+        return getAppConfig().get("appName").asText();
     }
 
     public static String getAppTitle() {
-        return getAppConfig().get("appTitle").getAsString();
+        return getAppConfig().get("appTitle").asText();
     }
 
     public static String getDatabaseUrl() {
-        return getAppConfig().getAsJsonObject("database").get("url").getAsString();
+        return getAppConfig().get("database").get("url").asText();
     }
 
     public static int getLoginWidth() {
-        return getAppConfig().getAsJsonObject("window").getAsJsonObject("login").get("width").getAsInt();
+        return getAppConfig().get("window").get("login").get("width").asInt();
     }
 
     public static int getLoginHeight() {
-        return getAppConfig().getAsJsonObject("window").getAsJsonObject("login").get("height").getAsInt();
+        return getAppConfig().get("window").get("login").get("height").asInt();
     }
 
     public static int getDashboardWidth() {
-        return getAppConfig().getAsJsonObject("window").getAsJsonObject("dashboard").get("width").getAsInt();
+        return getAppConfig().get("window").get("dashboard").get("width").asInt();
     }
 
     public static int getDashboardHeight() {
-        return getAppConfig().getAsJsonObject("window").getAsJsonObject("dashboard").get("height").getAsInt();
+        return getAppConfig().get("window").get("dashboard").get("height").asInt();
     }
 
     public static int getSidebarWidth() {
-        return getAppConfig().getAsJsonObject("sidebar").get("width").getAsInt();
+        return getAppConfig().get("sidebar").get("width").asInt();
     }
 
     public static String getBrandText() {
-        return getAppConfig().getAsJsonObject("sidebar").get("brandText").getAsString();
+        return getAppConfig().get("sidebar").get("brandText").asText();
     }
 
     public static int getMealCalendarWeeks() {
-        return getAppConfig().getAsJsonObject("meals").get("calendarWeeks").getAsInt();
+        return getAppConfig().get("meals").get("calendarWeeks").asInt();
     }
 
     public static int getMealLockoutHours() {
-        return getAppConfig().getAsJsonObject("meals").get("lockoutHours").getAsInt();
+        return getAppConfig().get("meals").get("lockoutHours").asInt();
     }
 
     public static String getDefaultMealState() {
-        return getAppConfig().getAsJsonObject("meals").get("defaultState").getAsString();
+        return getAppConfig().get("meals").get("defaultState").asText();
     }
 
     public static String getCurrencyFormat() {
-        return getAppConfig().getAsJsonObject("currency").get("format").getAsString();
+        return getAppConfig().get("currency").get("format").asText();
     }
 
     public static String getCurrencySymbol() {
-        return getAppConfig().getAsJsonObject("currency").get("symbol").getAsString();
+        return getAppConfig().get("currency").get("symbol").asText();
     }
 
     public static String getCurrencyFallback() {
-        return getAppConfig().getAsJsonObject("currency").get("fallbackSymbol").getAsString();
+        return getAppConfig().get("currency").get("fallbackSymbol").asText();
     }
 
     // ────────────────── Navigation Config ──────────────────
 
-    /** Returns the cached navigation.json as a JsonObject. */
-    public static JsonObject getNavConfig() {
+    /** Returns the cached navigation.json as an ObjectNode. */
+    public static ObjectNode getNavConfig() {
         if (navigationConfig == null) {
             navigationConfig = loadJsonObject(CONFIG_BASE + "navigation.json");
         }
@@ -158,11 +147,11 @@ public class JsonConfig {
      * Returns the sidebar menu items for the given role.
      */
     public static String[] getMenuItems(String role) {
-        JsonObject roles = getNavConfig().getAsJsonObject("roles");
+        JsonNode roles = getNavConfig().get("roles");
         if (roles.has(role)) {
-            JsonArray items = roles.getAsJsonObject(role).getAsJsonArray("menuItems");
+            ArrayNode items = (ArrayNode) roles.get(role).get("menuItems");
             String[] result = new String[items.size()];
-            for (int i = 0; i < items.size(); i++) result[i] = items.get(i).getAsString();
+            for (int i = 0; i < items.size(); i++) result[i] = items.get(i).asText();
             return result;
         }
         // Fallback to STUDENT menu
@@ -173,28 +162,28 @@ public class JsonConfig {
      * Returns the FXML filename for a given page name.
      */
     public static String getPageRoute(String pageName) {
-        JsonObject routes = getNavConfig().getAsJsonObject("pageRoutes");
+        JsonNode routes = getNavConfig().get("pageRoutes");
         if (routes.has(pageName)) {
-            return routes.get(pageName).getAsString();
+            return routes.get(pageName).asText();
         }
-        return routes.get(getNavConfig().get("defaultPage").getAsString()).getAsString();
+        return routes.get(getNavConfig().get("defaultPage").asText()).asText();
     }
 
     /**
      * Returns the default page name (e.g. "Home").
      */
     public static String getDefaultPage() {
-        return getNavConfig().get("defaultPage").getAsString();
+        return getNavConfig().get("defaultPage").asText();
     }
 
     /**
      * Checks a boolean permission for a role in navigation.json.
      */
     public static boolean hasPermission(String role, String permission) {
-        JsonObject roles = getNavConfig().getAsJsonObject("roles");
+        JsonNode roles = getNavConfig().get("roles");
         if (roles.has(role)) {
-            JsonObject roleObj = roles.getAsJsonObject(role);
-            if (roleObj.has(permission)) return roleObj.get(permission).getAsBoolean();
+            JsonNode roleObj = roles.get(role);
+            if (roleObj.has(permission)) return roleObj.get(permission).asBoolean();
         }
         return false;
     }

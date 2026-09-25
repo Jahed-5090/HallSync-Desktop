@@ -1,8 +1,8 @@
 package com.hallsync.controller;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.hallsync.config.JsonConfig;
 import com.hallsync.database.Database;
 import com.hallsync.model.User;
@@ -33,24 +33,23 @@ public class HallInfoController implements PageController {
         diningContactLabel.setText("Dining Manager Contact: " + info[1]);
 
         // Load achievements and former provosts from hall-info.json
-        JsonObject hallInfo = JsonConfig.loadJsonObject(JsonConfig.hallInfoPath());
+        ObjectNode hallInfo = JsonConfig.loadJsonObject(JsonConfig.hallInfoPath());
 
         // Achievements
-        JsonArray achievements = hallInfo.getAsJsonArray("achievements");
+        ArrayNode achievements = (ArrayNode) hallInfo.get("achievements");
         StringBuilder achText = new StringBuilder();
-        for (JsonElement el : achievements) {
+        for (JsonNode el : achievements) {
             if (achText.length() > 0) achText.append("\n");
-            achText.append("• ").append(el.getAsString());
+            achText.append("• ").append(el.asText());
         }
         achievementsContainer.getChildren().add(createWrappedLabel(achText.toString()));
 
         // Former provosts
-        JsonArray provosts = hallInfo.getAsJsonArray("formerProvosts");
+        ArrayNode provosts = (ArrayNode) hallInfo.get("formerProvosts");
         StringBuilder provText = new StringBuilder();
-        for (JsonElement el : provosts) {
-            JsonObject p = el.getAsJsonObject();
+        for (JsonNode p : provosts) {
             if (provText.length() > 0) provText.append("\n");
-            provText.append(p.get("year").getAsString()).append(" — ").append(p.get("name").getAsString());
+            provText.append(p.get("year").asText()).append(" — ").append(p.get("name").asText());
         }
         formerProvostsContainer.getChildren().add(createWrappedLabel(provText.toString()));
     }
