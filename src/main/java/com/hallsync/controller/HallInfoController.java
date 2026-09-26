@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.hallsync.config.JsonConfig;
 import com.hallsync.database.Database;
 import com.hallsync.model.User;
-import com.hallsync.view.View;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;

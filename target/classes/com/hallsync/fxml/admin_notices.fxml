@@ -7,13 +7,13 @@
 <VBox xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.hallsync.controller.AdminNoticesController"
       spacing="18">
-    <padding><Insets topRightBottomLeft="10"/></padding>
+    <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
 
     <Label text="Publish Notice" styleClass="page-title"/>
 
     <!-- Notice editor card -->
     <VBox styleClass="card" spacing="10">
-        <padding><Insets topRightBottomLeft="18"/></padding>
+        <padding><Insets top="18" right="18" bottom="18" left="18"/></padding>
         <Label text="Admin notice editor" styleClass="card-title"/>
         <TextField fx:id="titleField" promptText="Notice title"/>
         <TextArea fx:id="bodyArea" promptText="Notice details" prefRowCount="5"/>

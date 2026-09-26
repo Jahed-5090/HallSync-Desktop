@@ -13,7 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.util.List;
+
 
 /**
  * Controller for home.fxml — Notice Board / Home page.
@@ -24,14 +24,13 @@ public class HomeController implements PageController {
     @FXML private VBox noticesContainer;
     @FXML private GridPane infoGrid;
     @FXML private HBox quickActions;
+    @FXML private VBox holidayContainer;
 
-    private Stage stage;
     private User user;
     private DashboardController dashboard;
 
     @Override
     public void init(Stage stage, User user, DashboardController dashboard) {
-        this.stage = stage;
         this.user = user;
         this.dashboard = dashboard;
 
@@ -41,6 +40,7 @@ public class HomeController implements PageController {
         // Load notices and hall info in parallel on the thread pool
         loadNoticesAsync();
         loadInfoCardsAsync();
+        loadHolidayAsync();
 
         // Show quick actions based on JSON permission
         if (JsonConfig.hasPermission(user.role, "showQuickActions")) {
@@ -95,6 +95,52 @@ public class HomeController implements PageController {
                 infoGrid.add(new Label("Failed to load hall info."), 0, 0);
             }
         );
+    }
+
+    /**
+     * Networking Requirement: Fetches upcoming holiday from an external API via HTTP GET
+     * and parses the JSON response using Jackson.
+     */
+    private void loadHolidayAsync() {
+        AppExecutor.runAsync(() -> {
+            try {
+                java.net.http.HttpClient client = java.net.http.HttpClient.newBuilder()
+                        .connectTimeout(java.time.Duration.ofSeconds(10))
+                        .build();
+                java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()
+                        .uri(java.net.URI.create("https://date.nager.at/api/v3/NextPublicHolidays/BD"))
+                        .GET()
+                        .build();
+
+                java.net.http.HttpResponse<String> response = client.send(request, java.net.http.HttpResponse.BodyHandlers.ofString());
+
+                if (response.statusCode() == 200) {
+                    com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+                    com.fasterxml.jackson.databind.JsonNode rootNode = mapper.readTree(response.body());
+                    if (rootNode.isArray() && rootNode.size() > 0) {
+                        com.fasterxml.jackson.databind.JsonNode holiday = rootNode.get(0);
+                        String name = holiday.get("name").asText();
+                        String localName = holiday.has("localName") ? holiday.get("localName").asText() : name;
+                        String dateStr = holiday.get("date").asText();
+                        
+                        java.time.LocalDate date = java.time.LocalDate.parse(dateStr);
+                        String formattedDate = date.format(java.time.format.DateTimeFormatter.ofPattern("dd MMMM yyyy"));
+
+                        return name + " (" + localName + ")\n" + formattedDate;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return "Holiday info unavailable.";
+        }, result -> {
+            if (holidayContainer != null) {
+                holidayContainer.getChildren().clear();
+                Label resultLabel = new Label(result);
+                resultLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+                holidayContainer.getChildren().add(View.card(null, resultLabel));
+            }
+        });
     }
 
     @FXML private void goToBills()      { dashboard.navigateTo("Bills"); }

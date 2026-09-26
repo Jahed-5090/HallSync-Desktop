@@ -28,7 +28,7 @@
     <center>
         <ScrollPane fx:id="scrollPane" fitToWidth="true" styleClass="scroll">
             <VBox fx:id="contentArea" spacing="18" styleClass="page">
-                <padding><Insets topRightBottomLeft="26"/></padding>
+                <padding><Insets top="26" right="26" bottom="26" left="26"/></padding>
             </VBox>
         </ScrollPane>
     </center>

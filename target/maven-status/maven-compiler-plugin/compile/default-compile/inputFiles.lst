@@ -1,5 +1,7 @@
 /Users/jahedahmed/Desktop/HallSync ChatGPT/src/main/java/com/hallsync/Main.java
 /Users/jahedahmed/Desktop/HallSync ChatGPT/src/main/java/com/hallsync/config/JsonConfig.java
+/Users/jahedahmed/Desktop/HallSync ChatGPT/src/main/java/com/hallsync/controller/AdminBillsController.java
+/Users/jahedahmed/Desktop/HallSync ChatGPT/src/main/java/com/hallsync/controller/AdminCommitteeController.java
 /Users/jahedahmed/Desktop/HallSync ChatGPT/src/main/java/com/hallsync/controller/AdminNoticesController.java
 /Users/jahedahmed/Desktop/HallSync ChatGPT/src/main/java/com/hallsync/controller/AdminStaffController.java
 /Users/jahedahmed/Desktop/HallSync ChatGPT/src/main/java/com/hallsync/controller/AdminStudentsController.java
@@ -19,7 +21,6 @@
 /Users/jahedahmed/Desktop/HallSync ChatGPT/src/main/java/com/hallsync/database/Database.java
 /Users/jahedahmed/Desktop/HallSync ChatGPT/src/main/java/com/hallsync/launcher.java
 /Users/jahedahmed/Desktop/HallSync ChatGPT/src/main/java/com/hallsync/model/Bill.java
-/Users/jahedahmed/Desktop/HallSync ChatGPT/src/main/java/com/hallsync/model/BillSector.java
 /Users/jahedahmed/Desktop/HallSync ChatGPT/src/main/java/com/hallsync/model/CommitteeMember.java
 /Users/jahedahmed/Desktop/HallSync ChatGPT/src/main/java/com/hallsync/model/Complaint.java
 /Users/jahedahmed/Desktop/HallSync ChatGPT/src/main/java/com/hallsync/model/Notice.java

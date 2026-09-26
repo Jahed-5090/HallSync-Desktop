@@ -2,7 +2,7 @@ package com.hallsync.controller;
 
 import com.hallsync.config.JsonConfig;
 import com.hallsync.database.Database;
-import com.hallsync.model.User;
+
 import com.hallsync.util.AppExecutor;
 import com.hallsync.view.View;
 import javafx.fxml.FXML;

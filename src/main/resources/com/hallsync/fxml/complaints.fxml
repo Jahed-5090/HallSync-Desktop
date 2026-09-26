@@ -7,13 +7,13 @@
 <VBox xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.hallsync.controller.ComplaintsController"
       spacing="18">
-    <padding><Insets topRightBottomLeft="10"/></padding>
+    <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
 
     <Label text="Complaints" styleClass="page-title"/>
 
     <!-- Submission form (hidden for Admin/Provost) -->
     <VBox fx:id="submitCard" spacing="10" styleClass="card" visible="false" managed="false">
-        <padding><Insets topRightBottomLeft="18"/></padding>
+        <padding><Insets top="18" right="18" bottom="18" left="18"/></padding>
         <Label text="New complaint" styleClass="card-title"/>
         <TextField fx:id="subjectField" promptText="Subject"/>
         <TextArea fx:id="messageArea" promptText="Describe the service issue" prefRowCount="5"/>

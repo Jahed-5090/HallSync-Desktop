@@ -7,7 +7,7 @@
 <VBox xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.hallsync.controller.AdminStaffController"
       spacing="16">
-    <padding><Insets topRightBottomLeft="10"/></padding>
+    <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
 
     <!-- Header -->
     <HBox spacing="12" alignment="CENTER_LEFT">
@@ -21,7 +21,7 @@
     <!-- Staff cards populated dynamically -->
     <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="scroll">
         <VBox fx:id="staffContainer" spacing="12">
-            <padding><Insets topRightBottomLeft="4"/></padding>
+            <padding><Insets top="4" right="4" bottom="4" left="4"/></padding>
         </VBox>
     </ScrollPane>
 </VBox>

@@ -7,7 +7,7 @@
 <VBox xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.hallsync.controller.HomeController"
       spacing="18">
-    <padding><Insets topRightBottomLeft="10"/></padding>
+    <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
 
     <Label text="Notice Board" styleClass="page-title"/>
     <Label text="Important hall updates appear first on every dashboard." styleClass="subtitle" wrapText="true"/>
@@ -17,6 +17,11 @@
 
     <!-- Info grid: Dining Manager, Active Provost, Role -->
     <GridPane fx:id="infoGrid" hgap="16" vgap="16"/>
+
+    <Label text="Upcoming Holiday" styleClass="page-title"/>
+    <VBox fx:id="holidayContainer" spacing="8">
+        <Label text="Loading holiday info..."/>
+    </VBox>
 
     <!-- View Hall Staff button — visible on all dashboards -->
     <Button text="👥  View Hall Staff" styleClass="action-button" onAction="#goToStaff"/>

@@ -7,7 +7,7 @@
 <VBox xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.hallsync.controller.StaffController"
       spacing="18">
-    <padding><Insets topRightBottomLeft="10"/></padding>
+    <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
 
     <HBox spacing="12" alignment="CENTER_LEFT">
         <Label text="Hall Staff Directory" styleClass="page-title"/>

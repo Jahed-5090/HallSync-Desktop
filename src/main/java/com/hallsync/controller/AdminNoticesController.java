@@ -21,12 +21,10 @@ public class AdminNoticesController implements PageController {
     @FXML private VBox noticesContainer;
 
     private User user;
-    private DashboardController dashboard;
 
     @Override
     public void init(Stage stage, User user, DashboardController dashboard) {
         this.user = user;
-        this.dashboard = dashboard;
         loadNotices();
     }
 

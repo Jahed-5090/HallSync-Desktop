@@ -12,6 +12,15 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.time.Duration;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import javafx.application.Platform;
 
 /**
  * Controller for dashboard.fxml.
@@ -23,6 +32,7 @@ public class DashboardController {
     @FXML private Label userLabel;
     @FXML private VBox navContainer;
     @FXML private VBox contentArea;
+    @FXML private Label quoteLabel;
 
     private Stage stage;
     private User user;
@@ -37,6 +47,46 @@ public class DashboardController {
         userLabel.setText(user.fullName + "\n" + user.role);
         buildNavigation();
         navigateTo(JsonConfig.getDefaultPage());
+        fetchQuoteOfTheDay();
+    }
+
+    /**
+     * Networking Requirement: Fetches a random quote from an external API via HTTP GET
+     * and parses the JSON response using Jackson.
+     */
+    private void fetchQuoteOfTheDay() {
+        com.hallsync.util.AppExecutor.runAsync(() -> {
+            try {
+                HttpClient client = HttpClient.newBuilder()
+                        .connectTimeout(Duration.ofSeconds(10))
+                        .build();
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(URI.create("https://dummyjson.com/quotes/random"))
+                        .GET()
+                        .build();
+
+                HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                
+                if (response.statusCode() == 200) {
+                    ObjectMapper mapper = new ObjectMapper();
+                    JsonNode rootNode = mapper.readTree(response.body());
+                    String quote = rootNode.get("quote").asText();
+                    String author = rootNode.get("author").asText();
+                    
+                    Platform.runLater(() -> {
+                        if (quoteLabel != null) {
+                            quoteLabel.setText("\"" + quote + "\" — " + author);
+                        }
+                    });
+                } else {
+                    Platform.runLater(() -> quoteLabel.setText("Could not load quote today."));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                Platform.runLater(() -> quoteLabel.setText("Stay inspired!"));
+            }
+            return null;
+        }, res -> {});
     }
 
     private void buildNavigation() {

@@ -27,15 +27,11 @@ public class ComplaintsController implements PageController {
     @FXML private Label listTitle;
     @FXML private VBox complaintsContainer;
 
-    private Stage stage;
     private User user;
-    private DashboardController dashboard;
 
     @Override
     public void init(Stage stage, User user, DashboardController dashboard) {
-        this.stage = stage;
         this.user = user;
-        this.dashboard = dashboard;
 
         // Show submission form based on JSON permission
         if (JsonConfig.hasPermission(user.role, "canSubmitComplaints")) {
