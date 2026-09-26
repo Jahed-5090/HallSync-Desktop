@@ -46,5 +46,17 @@
     "phone": "+880 1654-332211",
     "location": "Dining Hall Kitchen",
     "workRole": "Assistant Cook"
+  },
+  {
+    "name": "Md. Rahim Uddin",
+    "phone": "+880 1712-345678",
+    "location": "Ground Floor, Main Building",
+    "workRole": "Security Guard"
+  },
+  {
+    "name": "Rabiul Ahmed",
+    "phone": "+880 1654-332211",
+    "location": "Dining Hall Kitchen",
+    "workRole": "Assistant Cook2"
   }
 ]

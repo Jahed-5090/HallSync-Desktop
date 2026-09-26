@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="20" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.hallsync.controller.AdminCommitteeController">
+    <Label text="Manage Committee" styleClass="page-title"/>
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <TextField fx:id="nameField" promptText="Name"/>
+        <TextField fx:id="positionField" promptText="Position"/>
+        <TextField fx:id="deptField" promptText="Department"/>
+        <TextField fx:id="roomField" promptText="Room"/>
+        <TextField fx:id="contactField" promptText="Contact"/>
+        <Button text="Add Member" onAction="#handleAddMember"/>
+    </HBox>
+    <ScrollPane fitToWidth="true" styleClass="edge-to-edge">
+        <VBox fx:id="membersContainer" spacing="10"/>
+    </ScrollPane>
+</VBox>

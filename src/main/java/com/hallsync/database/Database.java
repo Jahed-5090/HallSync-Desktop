@@ -503,10 +503,25 @@ public class Database {
 
     public static List<CommitteeMember> committee() {
         List<CommitteeMember> list = new ArrayList<>();
-        try (Connection c = connect(); PreparedStatement p = c.prepareStatement("SELECT name,position,department,room,contact FROM committee ORDER BY id")) {
+        try (Connection c = connect(); PreparedStatement p = c.prepareStatement("SELECT id,name,position,department,room,contact FROM committee ORDER BY id")) {
             ResultSet r = p.executeQuery();
-            while (r.next()) list.add(new CommitteeMember(r.getString(1), r.getString(2), r.getString(3), r.getString(4), r.getString(5)));
+            while (r.next()) list.add(new CommitteeMember(r.getInt(1), r.getString(2), r.getString(3), r.getString(4), r.getString(5), r.getString(6)));
         } catch (SQLException e) { e.printStackTrace(); }
         return list;
+    }
+
+    public static void addCommitteeMember(String name, String position, String department, String room, String contact) {
+        try (Connection c = connect(); PreparedStatement p = c.prepareStatement(
+                "INSERT INTO committee(name,position,department,room,contact) VALUES(?,?,?,?,?)")) {
+            p.setString(1, name); p.setString(2, position); p.setString(3, department);
+            p.setString(4, room); p.setString(5, contact);
+            p.executeUpdate();
+        } catch (SQLException e) { e.printStackTrace(); }
+    }
+
+    public static void deleteCommitteeMember(int id) {
+        try (Connection c = connect(); PreparedStatement p = c.prepareStatement("DELETE FROM committee WHERE id=?")) {
+            p.setInt(1, id); p.executeUpdate();
+        } catch (SQLException e) { e.printStackTrace(); }
     }
 }

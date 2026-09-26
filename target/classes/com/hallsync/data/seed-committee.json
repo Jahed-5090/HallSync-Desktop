@@ -19,5 +19,12 @@
     "department": "English",
     "room": "302",
     "contact": "01911-333333"
+  },
+  {
+    "name": "JAHED AHMED",
+    "position": "General Secretary",
+    "department": "CSE",
+    "room": "302",
+    "contact": "01682105898"
   }
 ]
