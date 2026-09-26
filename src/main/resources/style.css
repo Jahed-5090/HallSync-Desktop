@@ -161,3 +161,142 @@
 .tab-button:hover {
     -fx-background-color: #cbd5e1;
 }
+
+/* ────────────────── Month Calendar & Range Styles ────────────────── */
+
+.range-box {
+    -fx-background-color: #ffffff;
+    -fx-padding: 18;
+    -fx-background-radius: 12;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 12;
+}
+
+.calendar-box {
+    -fx-background-color: #ffffff;
+    -fx-padding: 20;
+    -fx-background-radius: 12;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 12;
+}
+
+.month-nav-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e293b;
+}
+
+.weekday-header-cell {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #64748b;
+    -fx-alignment: CENTER;
+    -fx-padding: 8 0;
+}
+
+.meal-day-cell {
+    -fx-pref-width: 120px;
+    -fx-pref-height: 72px;
+    -fx-padding: 8;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-alignment: TOP_LEFT;
+    -fx-cursor: hand;
+}
+
+.meal-day-cell:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.12), 6, 0, 0, 2);
+}
+
+.meal-cell-on {
+    -fx-background-color: #ecfdf5;
+    -fx-border-color: #a7f3d0;
+}
+
+.meal-cell-off {
+    -fx-background-color: #f8fafc;
+    -fx-border-color: #cbd5e1;
+}
+
+.meal-cell-hall-off {
+    -fx-background-color: #fef2f2;
+    -fx-border-color: #fecaca;
+}
+
+.meal-cell-past {
+    -fx-opacity: 0.55;
+    -fx-cursor: default;
+}
+
+.meal-cell-today {
+    -fx-border-color: #2563eb;
+    -fx-border-width: 2px;
+}
+
+.meal-cell-empty {
+    -fx-pref-width: 120px;
+    -fx-pref-height: 72px;
+    -fx-background-color: #f8fafc;
+    -fx-background-radius: 10;
+    -fx-opacity: 0.35;
+}
+
+.day-number-label {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e293b;
+}
+
+.day-status-badge {
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 3 8;
+    -fx-background-radius: 6;
+}
+
+.badge-on {
+    -fx-background-color: #10b981;
+    -fx-text-fill: white;
+}
+
+.badge-off {
+    -fx-background-color: #94a3b8;
+    -fx-text-fill: white;
+}
+
+.badge-hall-off {
+    -fx-background-color: #ef4444;
+    -fx-text-fill: white;
+}
+
+.stat-pill-on {
+    -fx-background-color: #d1fae5;
+    -fx-text-fill: #065f46;
+    -fx-font-weight: bold;
+    -fx-padding: 6 14;
+    -fx-background-radius: 20;
+    -fx-font-size: 13px;
+}
+
+.stat-pill-off {
+    -fx-background-color: #f1f5f9;
+    -fx-text-fill: #475569;
+    -fx-font-weight: bold;
+    -fx-padding: 6 14;
+    -fx-background-radius: 20;
+    -fx-font-size: 13px;
+}
+
+.alert-banner {
+    -fx-background-color: #fef3c7;
+    -fx-border-color: #f59e0b;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 12 16;
+}
+
+.alert-banner-text {
+    -fx-text-fill: #92400e;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+}

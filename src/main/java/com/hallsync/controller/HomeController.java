@@ -60,13 +60,16 @@ public class HomeController implements PageController {
                 if (notices.isEmpty()) {
                     noticesContainer.getChildren().add(new Label("No notices posted yet."));
                 } else {
+                    int count = 0;
                     for (Notice n : notices) {
+                        if (count >= 4) break;
                         Label h = new Label(n.title());
                         h.getStyleClass().add("notice-title");
                         Label b = new Label(n.body() + "\n\nPosted by: " + n.postedBy() + " • " + n.date());
                         b.getStyleClass().add("notice-body");
                         b.setWrapText(true);
                         noticesContainer.getChildren().add(View.card(null, h, b));
+                        count++;
                     }
                 }
             },

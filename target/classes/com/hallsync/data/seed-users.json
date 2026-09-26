@@ -16,5 +16,11 @@
     "password": "student",
     "fullName": "Student Demo",
     "role": "STUDENT"
+  } ,
+   {
+    "username": "JAHED",
+    "password": "JAHED",
+    "fullName": "JAHED AHMED",
+    "role": "STUDENT"
   }
 ]

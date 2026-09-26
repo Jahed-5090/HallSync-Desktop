@@ -6,16 +6,54 @@
 
 <VBox xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.hallsync.controller.MealsController"
-      spacing="18">
+      spacing="16">
     <padding><Insets topRightBottomLeft="10"/></padding>
 
-    <Label text="Meal Management Calendar" styleClass="page-title"/>
-    <Label text="Green = active, Grey = student OFF, Red = hall OFF. Student changes are allowed only 24+ hours ahead."
-           styleClass="subtitle" wrapText="true"/>
+    <!-- Page Header -->
+    <VBox spacing="4">
+        <Label text="Meal Calendar" styleClass="page-title"/>
+        <Label text="Organized month-by-month. Tap or click any date card below to turn your meal ON or OFF."
+               styleClass="subtitle" wrapText="true"/>
+    </VBox>
 
-    <!-- 6-week calendar grid, populated dynamically -->
-    <VBox fx:id="calendarContainer" spacing="8"/>
+    <!-- Role Restriction Banner (shown only for non-students) -->
+    <HBox fx:id="roleAlertBanner" visible="false" managed="false" styleClass="alert-banner" alignment="CENTER_LEFT">
+        <Label fx:id="roleAlertLabel"
+               text="🔒 Access Restricted: Meal on/off management is exclusively available to student accounts."
+               styleClass="alert-banner-text"/>
+    </HBox>
 
-    <Label text="Today and the next 23 hours are protected from student changes."
-           styleClass="hint"/>
+    <!-- Status Message for recent taps -->
+    <Label fx:id="statusLabel" text="" styleClass="hint"/>
+
+    <!-- Month Calendar Card -->
+    <VBox fx:id="calendarCard" spacing="14" styleClass="calendar-box">
+        <!-- Month Navigation Bar -->
+        <HBox alignment="CENTER_LEFT" spacing="12">
+            <Button fx:id="btnPrevMonth" text="◀ Previous" styleClass="tab-button" onAction="#handlePrevMonth"/>
+            <Label fx:id="monthTitleLabel" text="October 2026" styleClass="month-nav-title"/>
+            <Button fx:id="btnNextMonth" text="Next ▶" styleClass="tab-button" onAction="#handleNextMonth"/>
+            <Button fx:id="btnCurrentMonth" text="Today's Month" styleClass="tab-button" onAction="#handleCurrentMonth"/>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <HBox spacing="10" alignment="CENTER_RIGHT">
+                <Label fx:id="statActiveLabel" text="🟢 Meals ON: --" styleClass="stat-pill-on"/>
+                <Label fx:id="statOffLabel" text="⚪ Meals OFF: --" styleClass="stat-pill-off"/>
+            </HBox>
+        </HBox>
+
+        <!-- Weekday Headers (Mon - Sun) -->
+        <GridPane fx:id="weekdayHeaderGrid" hgap="8" vgap="4"/>
+
+        <!-- Month Days Grid -->
+        <GridPane fx:id="calendarGrid" hgap="8" vgap="8"/>
+
+        <!-- Footer / Legend -->
+        <HBox alignment="CENTER_LEFT" spacing="16">
+            <Label text="Legend: 🟢 Green = Meal Active (ON)  |  ⚪ Grey = Meal Turned OFF  |  🔴 Red = Hall Closed" styleClass="hint"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label text="ℹ️ 24-hour advance lockout rule: Today and next 24h cannot be changed." styleClass="hint"/>
+        </HBox>
+    </VBox>
 </VBox>

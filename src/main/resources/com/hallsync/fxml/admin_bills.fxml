@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="20" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.hallsync.controller.AdminBillsController">
+    <Label text="Manage Bill Scopes" styleClass="page-title"/>
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Target Month:"/>
+        <ComboBox fx:id="monthSelector" prefWidth="150"/>
+        <TextField fx:id="customMonthField" promptText="YYYY-MM (if custom)" visible="false" managed="false"/>
+        <Button text="Load" onAction="#handleLoadScopes"/>
+    </HBox>
+    <Separator/>
+    <Label fx:id="currentScopeLabel" text="Editing: Default Setup" style="-fx-font-weight: bold;"/>
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <TextField fx:id="sectorField" promptText="Sector (e.g. Water)"/>
+        <TextField fx:id="amountField" promptText="Amount (e.g. 150)"/>
+        <Button text="Add Scope" onAction="#handleAddScope"/>
+    </HBox>
+    <VBox fx:id="scopesContainer" spacing="10"/>
+</VBox>

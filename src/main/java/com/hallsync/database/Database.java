@@ -8,8 +8,11 @@ import com.hallsync.model.*;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Database {
     private static final String URL;
@@ -30,11 +33,13 @@ public class Database {
             s.executeUpdate("CREATE TABLE IF NOT EXISTS notices (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, body TEXT, posted_by TEXT, posted_at TEXT)");
             s.executeUpdate("CREATE TABLE IF NOT EXISTS bills (id INTEGER PRIMARY KEY AUTOINCREMENT, student_id INTEGER, month TEXT, rent REAL, meals REAL, electricity REAL, paid REAL)");
             s.executeUpdate("CREATE TABLE IF NOT EXISTS meals (date TEXT PRIMARY KEY, state TEXT NOT NULL)");
+            s.executeUpdate("CREATE TABLE IF NOT EXISTS student_meals (username TEXT NOT NULL, date TEXT NOT NULL, state TEXT NOT NULL, PRIMARY KEY (username, date))");
             s.executeUpdate("CREATE TABLE IF NOT EXISTS complaints (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, subject TEXT, message TEXT, status TEXT, posted_at TEXT)");
             s.executeUpdate("CREATE TABLE IF NOT EXISTS students (id INTEGER PRIMARY KEY AUTOINCREMENT, full_name TEXT, department TEXT, roll TEXT, session TEXT, room TEXT, block TEXT)");
             s.executeUpdate("CREATE TABLE IF NOT EXISTS hall_info (id INTEGER PRIMARY KEY CHECK(id=1), dining_manager TEXT, dining_contact TEXT, provost TEXT)");
             s.executeUpdate("CREATE TABLE IF NOT EXISTS committee (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, position TEXT, department TEXT, room TEXT, contact TEXT)");
             s.executeUpdate("CREATE TABLE IF NOT EXISTS hall_staff (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, phone TEXT, location TEXT, work_role TEXT)");
+            s.executeUpdate("CREATE TABLE IF NOT EXISTS bill_scopes (id INTEGER PRIMARY KEY AUTOINCREMENT, month TEXT, sector TEXT, amount REAL)");
             // Add email column to users table if it doesn't exist (safe migration)
             try { s.executeUpdate("ALTER TABLE users ADD COLUMN email TEXT"); } catch (SQLException ignored) {}
 
@@ -207,7 +212,28 @@ public class Database {
         return list;
     }
 
+    public static void createBillScopesTable() {
+        try (Connection c = connect(); java.sql.Statement s = c.createStatement()) {
+            s.executeUpdate("CREATE TABLE IF NOT EXISTS bill_scopes (id INTEGER PRIMARY KEY AUTOINCREMENT, month TEXT, sector TEXT, amount REAL)");
+        } catch (SQLException e) { e.printStackTrace(); }
+    }
+
     public static String mealState(LocalDate date) {
+        return mealState(date, null);
+    }
+
+    public static String mealState(LocalDate date, String username) {
+        if (username != null && !username.isBlank()) {
+            try (Connection c = connect(); PreparedStatement p = c.prepareStatement("SELECT state FROM student_meals WHERE username=? AND date=?")) {
+                p.setString(1, username);
+                p.setString(2, date.toString());
+                try (ResultSet r = p.executeQuery()) {
+                    if (r.next()) return r.getString(1);
+                }
+            } catch (SQLException e) { e.printStackTrace(); }
+        }
+
+        // Fallback to global meals table
         try (Connection c = connect(); PreparedStatement p = c.prepareStatement("SELECT state FROM meals WHERE date=?")) {
             p.setString(1, date.toString());
             try (ResultSet r = p.executeQuery()) { if (r.next()) return r.getString(1); }
@@ -215,13 +241,107 @@ public class Database {
         return JsonConfig.getDefaultMealState();
     }
 
-    public static void setMealState(LocalDate date, String state) {
-        try (Connection c = connect(); PreparedStatement p = c.prepareStatement("INSERT INTO meals(date,state) VALUES(?,?) ON CONFLICT(date) DO UPDATE SET state=excluded.state")) {
-            p.setString(1, date.toString()); p.setString(2, state); p.executeUpdate();
+    public static Map<LocalDate, String> getMonthlyMealStates(YearMonth ym, String username) {
+        Map<LocalDate, String> states = new HashMap<>();
+        int days = ym.lengthOfMonth();
+        String defaultState = JsonConfig.getDefaultMealState();
+        for (int d = 1; d <= days; d++) {
+            states.put(ym.atDay(d), defaultState);
+        }
+
+        String prefix = ym.toString() + "-%";
+        try (Connection c = connect()) {
+            // 1. Global meal states (e.g. HALL_OFF)
+            try (PreparedStatement p = c.prepareStatement("SELECT date, state FROM meals WHERE date LIKE ?")) {
+                p.setString(1, prefix);
+                try (ResultSet r = p.executeQuery()) {
+                    while (r.next()) {
+                        try {
+                            states.put(LocalDate.parse(r.getString(1)), r.getString(2));
+                        } catch (Exception ignored) {}
+                    }
+                }
+            }
+
+            // 2. Student-specific states (override global if set)
+            if (username != null && !username.isBlank()) {
+                try (PreparedStatement p = c.prepareStatement("SELECT date, state FROM student_meals WHERE username=? AND date LIKE ?")) {
+                    p.setString(1, username);
+                    p.setString(2, prefix);
+                    try (ResultSet r = p.executeQuery()) {
+                        while (r.next()) {
+                            try {
+                                states.put(LocalDate.parse(r.getString(1)), r.getString(2));
+                            } catch (Exception ignored) {}
+                        }
+                    }
+                }
+            }
         } catch (SQLException e) { e.printStackTrace(); }
+        return states;
     }
 
-    public static void setHallOff(LocalDate date) { setMealState(date, "HALL_OFF"); }
+    public static void setMealState(LocalDate date, String state) {
+        setMealState(date, null, state);
+    }
+
+    public static void setMealState(LocalDate date, String username, String state) {
+        if (username != null && !username.isBlank()) {
+            try (Connection c = connect(); PreparedStatement p = c.prepareStatement(
+                    "INSERT INTO student_meals(username,date,state) VALUES(?,?,?) ON CONFLICT(username,date) DO UPDATE SET state=excluded.state")) {
+                p.setString(1, username);
+                p.setString(2, date.toString());
+                p.setString(3, state);
+                p.executeUpdate();
+            } catch (SQLException e) { e.printStackTrace(); }
+        } else {
+            try (Connection c = connect(); PreparedStatement p = c.prepareStatement(
+                    "INSERT INTO meals(date,state) VALUES(?,?) ON CONFLICT(date) DO UPDATE SET state=excluded.state")) {
+                p.setString(1, date.toString());
+                p.setString(2, state);
+                p.executeUpdate();
+            } catch (SQLException e) { e.printStackTrace(); }
+        }
+    }
+
+    public static int setMealStateRange(LocalDate from, LocalDate to, String username, String state) {
+        if (from.isAfter(to)) return 0;
+        int count = 0;
+        try (Connection c = connect()) {
+            c.setAutoCommit(false);
+            String sql = (username != null && !username.isBlank())
+                ? "INSERT INTO student_meals(username,date,state) VALUES(?,?,?) ON CONFLICT(username,date) DO UPDATE SET state=excluded.state"
+                : "INSERT INTO meals(date,state) VALUES(?,?) ON CONFLICT(date) DO UPDATE SET state=excluded.state";
+            try (PreparedStatement p = c.prepareStatement(sql)) {
+                LocalDate curr = from;
+                while (!curr.isAfter(to)) {
+                    if (username != null && !username.isBlank()) {
+                        p.setString(1, username);
+                        p.setString(2, curr.toString());
+                        p.setString(3, state);
+                    } else {
+                        p.setString(1, curr.toString());
+                        p.setString(2, state);
+                    }
+                    p.addBatch();
+                    count++;
+                    curr = curr.plusDays(1);
+                }
+                p.executeBatch();
+                c.commit();
+            } catch (SQLException ex) {
+                c.rollback();
+                throw ex;
+            } finally {
+                c.setAutoCommit(true);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
+    public static void setHallOff(LocalDate date) { setMealState(date, null, "HALL_OFF"); }
 
     public static void addComplaint(String user, String subject, String message) {
         try (Connection c = connect(); PreparedStatement p = c.prepareStatement("INSERT INTO complaints(username,subject,message,status,posted_at) VALUES(?,?,?,'OPEN',datetime('now'))")) {

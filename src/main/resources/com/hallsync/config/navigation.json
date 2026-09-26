@@ -1,21 +1,21 @@
 {
   "roles": {
     "ADMIN": {
-      "menuItems": ["Home", "Notices", "Meals", "Complaints", "Directory", "Hall Info", "Committee", "Manage Students", "Manage Staff"],
+      "menuItems": ["Home", "Notices", "Complaints", "Directory", "Hall Info", "Committee", "Manage Students", "Manage Staff", "Profile", "Manage Bills"],
       "canPublishNotices": true,
       "canResolveComplaints": true,
       "canSetHallOff": true,
       "canSubmitComplaints": false
     },
     "PROVOST": {
-      "menuItems": ["Home", "Hall Info", "Committee", "Directory", "Meals", "Complaints"],
+      "menuItems": ["Home", "Hall Info", "Committee", "Directory", "Complaints", "Profile"],
       "canPublishNotices": false,
       "canResolveComplaints": false,
       "canSetHallOff": false,
       "canSubmitComplaints": false
     },
     "STUDENT": {
-      "menuItems": ["Home", "Bills", "Meals", "Complaints", "Directory", "Hall Info", "Committee"],
+      "menuItems": ["Home", "Bills", "Meals", "Complaints", "Directory", "Hall Info", "Committee", "Profile"],
       "canPublishNotices": false,
       "canResolveComplaints": false,
       "canSetHallOff": false,
@@ -34,7 +34,9 @@
     "Committee": "committee.fxml",
     "Staff": "staff.fxml",
     "Manage Students": "admin_students.fxml",
-    "Manage Staff": "admin_staff.fxml"
+    "Manage Staff": "admin_staff.fxml",
+    "Profile": "profile.fxml",
+    "Manage Bills": "admin_bills.fxml"
   },
   "defaultPage": "Home"
 }

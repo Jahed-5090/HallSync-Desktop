@@ -45,11 +45,52 @@ public class BillsController implements PageController {
             g.add(new Label("Rent"), 0, 0);       g.add(new Label(money(b.rent())), 1, 0);
             g.add(new Label("Meals"), 0, 1);       g.add(new Label(money(b.meals())), 1, 1);
             g.add(new Label("Electricity"), 0, 2); g.add(new Label(money(b.electricity())), 1, 2);
-            g.add(new Label("Total"), 0, 3);       g.add(new Label(money(b.total())), 1, 3);
-            g.add(new Label("Paid"), 0, 4);        g.add(new Label(money(b.paid())), 1, 4);
+            double extraTotal = 0.0;
+            try (java.sql.Connection c = Database.connect(); 
+                 java.sql.PreparedStatement pMonth = c.prepareStatement("SELECT sector, amount FROM bill_scopes WHERE month=?");
+                 java.sql.PreparedStatement pDefault = c.prepareStatement("SELECT sector, amount FROM bill_scopes WHERE month='DEFAULT'")) {
+                
+                pMonth.setString(1, b.month());
+                
+                java.util.List<String[]> currentScopes = new java.util.ArrayList<>();
+                
+                try (java.sql.ResultSet r = pMonth.executeQuery()) {
+                    while (r.next()) {
+                        currentScopes.add(new String[]{r.getString("sector"), String.valueOf(r.getDouble("amount"))});
+                    }
+                }
+                
+                if (currentScopes.isEmpty()) {
+                    try (java.sql.ResultSet r = pDefault.executeQuery()) {
+                        while (r.next()) {
+                            currentScopes.add(new String[]{r.getString("sector"), String.valueOf(r.getDouble("amount"))});
+                        }
+                    }
+                }
 
-            Label due = new Label("Past due / current due: " + money(b.due()));
-            due.getStyleClass().add(b.due() > 0 ? "due" : "paid");
+                int row = 4;
+                for (String[] scope : currentScopes) {
+                    double amount = Double.parseDouble(scope[1]);
+                    g.add(new Label(scope[0]), 0, row);
+                    g.add(new Label(money(amount)), 1, row);
+                    extraTotal += amount;
+                    row++;
+                }
+                g.add(new Label("Total"), 0, row);       
+                g.add(new Label(money(b.total() + extraTotal)), 1, row);
+                row++;
+                g.add(new Label("Paid"), 0, row);        
+                g.add(new Label(money(b.paid())), 1, row);
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            double grandTotal = b.total() + extraTotal;
+            double actualDue = Math.max(0, grandTotal - b.paid());
+
+            Label due = new Label("Past due / current due: " + money(actualDue));
+            due.getStyleClass().add(actualDue > 0 ? "due" : "paid");
 
             billsList.getChildren().add(View.card(b.month(), g, due));
         }
@@ -70,15 +111,50 @@ public class BillsController implements PageController {
         if (file == null) return;
 
         try {
-            writePdf(file, JsonConfig.getAppName() + " - " + b.month(), new String[]{
-                "Student: " + user.fullName,
-                "Rent: " + money(b.rent()),
-                "Meals: " + money(b.meals()),
-                "Electricity: " + money(b.electricity()),
-                "Total: " + money(b.total()),
-                "Paid: " + money(b.paid()),
-                "Due: " + money(b.due())
-            });
+            double extraTotal = 0.0;
+            java.util.List<String> dynamicLines = new java.util.ArrayList<>();
+            try (java.sql.Connection c = Database.connect(); 
+                 java.sql.PreparedStatement pMonth = c.prepareStatement("SELECT sector, amount FROM bill_scopes WHERE month=?");
+                 java.sql.PreparedStatement pDefault = c.prepareStatement("SELECT sector, amount FROM bill_scopes WHERE month='DEFAULT'")) {
+                 
+                pMonth.setString(1, b.month());
+                java.util.List<String[]> currentScopes = new java.util.ArrayList<>();
+                
+                try (java.sql.ResultSet r = pMonth.executeQuery()) {
+                    while (r.next()) {
+                        currentScopes.add(new String[]{r.getString("sector"), String.valueOf(r.getDouble("amount"))});
+                    }
+                }
+                
+                if (currentScopes.isEmpty()) {
+                    try (java.sql.ResultSet r = pDefault.executeQuery()) {
+                        while (r.next()) {
+                            currentScopes.add(new String[]{r.getString("sector"), String.valueOf(r.getDouble("amount"))});
+                        }
+                    }
+                }
+                
+                for (String[] scope : currentScopes) {
+                    double amount = Double.parseDouble(scope[1]);
+                    dynamicLines.add(scope[0] + ": " + money(amount));
+                    extraTotal += amount;
+                }
+            }
+            
+            double grandTotal = b.total() + extraTotal;
+            double actualDue = Math.max(0, grandTotal - b.paid());
+            
+            java.util.List<String> lines = new java.util.ArrayList<>();
+            lines.add("Student: " + user.fullName);
+            lines.add("Rent: " + money(b.rent()));
+            lines.add("Meals: " + money(b.meals()));
+            lines.add("Electricity: " + money(b.electricity()));
+            lines.addAll(dynamicLines);
+            lines.add("Total: " + money(grandTotal));
+            lines.add("Paid: " + money(b.paid()));
+            lines.add("Due: " + money(actualDue));
+            
+            writePdf(file, JsonConfig.getAppName() + " - " + b.month(), lines.toArray(new String[0]));
             View.showInfo("PDF created", "Bill exported successfully.");
         } catch (Exception ex) {
             View.showError("PDF error", ex.getMessage());
